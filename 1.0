@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root {
+      --navy: #102a43;
+      --blue: #2563eb;
+      --blue-light: #eff6ff;
+      --green: #15803d;
+      --green-light: #f0fdf4;
+      --amber: #b45309;
+      --amber-light: #fffbeb;
+      --red: #b91c1c;
+      --red-light: #fef2f2;
+      --text: #17212b;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --surface: #fff;
+      --background: #f4f7fb;
+      --shadow: 0 10px 30px rgba(15, 23, 42, .06);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: Arial, "Noto Sans Thai", sans-serif;
+    }
+
+    button, input, select, textarea { font: inherit; }
+
+    .topbar {
+      padding: 25px 20px 68px;
+      color: #fff;
+      background: linear-gradient(120deg, #102a43, #174d72);
+    }
+
+    .topbar-inner, main {
+      width: min(1200px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 14px;
+      background: rgba(255,255,255,.12);
+      font-size: 21px;
+      font-weight: 700;
+    }
+
+    .brand h1 { margin: 0 0 4px; font-size: 21px; }
+    .brand p { margin: 0; color: #d8e7f2; font-size: 13px; }
+
+    .date-chip {
+      padding: 10px 13px;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 12px;
+      color: #eef6fc;
+      background: rgba(255,255,255,.08);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    main {
+      margin-top: -44px;
+      padding-bottom: 36px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 0 14px;
+    }
+
+    .section-heading h2 { margin: 0; font-size: 18px; }
+    .section-heading p { margin: 5px 0 0; color: var(--muted); font-size: 13px; }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      min-width: 0;
+      padding: 18px;
+      border: 1px solid rgba(226,232,240,.9);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .stat-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .stat-label { color: var(--muted); font-size: 13px; }
+
+    .stat-icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .icon-blue { color: var(--blue); background: var(--blue-light); }
+    .icon-green { color: var(--green); background: var(--green-light); }
+    .icon-amber { color: var(--amber); background: var(--amber-light); }
+    .icon-red { color: var(--red); background: var(--red-light); }
+
+    .stat-value {
+      overflow-wrap: anywhere;
+      font-size: clamp(20px, 2.5vw, 27px);
+      line-height: 1.2;
+      font-weight: 700;
+    }
+
+    .stat-foot { margin-top: 7px; color: var(--muted); font-size: 12px; }
+
+    .panel, .form-card {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .panel { margin-bottom: 16px; }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .panel-header h2, .form-card h2 { margin: 0; font-size: 17px; }
+    .panel-subtitle { margin: 5px 0 0; color: var(--muted); font-size: 13px; }
+
+    .btn {
+      min-height: 40px;
+      padding: 9px 14px;
+      border: 0;
+      border-radius: 10px;
+      color: #fff;
+      background: var(--blue);
+      font-weight: 700;
+      cursor: pointer;
+      transition: .15s ease;
+    }
+
+    .btn:hover { background: #1d4ed8; }
+    .btn:disabled { opacity: .6; cursor: wait; }
+
+    .btn-secondary {
+      border: 1px solid var(--line);
+      color: #334155;
+      background: #f1f5f9;
+    }
+
+    .btn-secondary:hover { background: #e8eef5; }
+
+    .message {
+      display: none;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .message.visible { display: block; }
+    .message.success { color: #166534; background: #f0fdf4; border: 1px solid #bbf7d0; }
+    .message.error { color: #991b1b; background: #fef2f2; border: 1px solid #fecaca; }
+
+    .alerts-list { display: grid; gap: 9px; }
+
+    .alert-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: #fff;
+    }
+
+    .alert-item.today { border-color: #fecaca; background: #fff8f7; }
+
+    .alert-dot {
+      flex: 0 0 9px;
+      width: 9px;
+      height: 9px;
+      margin-top: 6px;
+      border-radius: 50%;
+      background: #f59e0b;
+    }
+
+    .alert-item.today .alert-dot { background: #dc2626; }
+    .alert-title { margin-bottom: 4px; font-size: 14px; font-weight: 700; }
+    .alert-detail { color: var(--muted); font-size: 13px; line-height: 1.5; }
+    .empty-state { padding: 14px 0; color: var(--muted); font-size: 14px; }
+
+    .forms-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      align-items: start;
+      margin-bottom: 16px;
+    }
+
+    .form-card .panel-subtitle { margin-bottom: 13px; }
+
+    label {
+      display: block;
+      margin: 12px 0 6px;
+      color: #334155;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    input, select, textarea {
+      display: block;
+      width: 100%;
+      min-height: 42px;
+      padding: 9px 11px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      outline: none;
+      color: var(--text);
+      background: #fff;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 3px rgba(59,130,246,.13);
+    }
+
+    textarea { min-height: 66px; resize: vertical; }
+
+    .form-card .btn { width: 100%; margin-top: 14px; }
+
+    .form-note {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .choice-label { margin-bottom: 8px; }
+
+    .choice-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .choice-option {
+      position: relative;
+      display: block;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .choice-option input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+    }
+
+    .choice-option span {
+      min-height: 42px;
+      display: grid;
+      place-items: center;
+      padding: 8px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      color: #334155;
+      background: #fff;
+      text-align: center;
+      font-size: 13px;
+      transition: .15s ease;
+    }
+
+    .choice-option input:checked + span {
+      border-color: var(--blue);
+      color: #1d4ed8;
+      background: var(--blue-light);
+      box-shadow: 0 0 0 2px rgba(37,99,235,.08);
+    }
+
+    .choice-option input:focus-visible + span {
+      outline: 3px solid rgba(59,130,246,.25);
+    }
+
+    .table-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .search { max-width: 320px; }
+    .table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+    table {
+      width: 100%;
+      min-width: 870px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px 11px;
+      border-bottom: 1px solid #edf1f5;
+      text-align: left;
+      vertical-align: middle;
+      font-size: 13px;
+    }
+
+    th {
+      color: #64748b;
+      background: #f8fafc;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    tbody tr:hover { background: #fafcff; }
+    .customer-name { color: #17212b; font-weight: 700; }
+    .customer-phone { margin-top: 4px; color: var(--muted); font-size: 12px; }
+    .money { white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 9px;
+      border-radius: 999px;
+      color: #166534;
+      background: #f0fdf4;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status.closed { color: #475569; background: #f1f5f9; }
+
+    .small-note {
+      margin: 13px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .forms-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .form-card:last-child { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 620px) {
+      .topbar { padding: 18px 0 62px; }
+      .topbar-inner, main { width: min(100% - 24px, 1200px); }
+      .topbar-inner { align-items: flex-start; }
+      .brand h1 { font-size: 18px; }
+      .date-chip { padding: 8px 9px; font-size: 11px; }
+      .summary-grid { gap: 9px; }
+      .stat-card { padding: 14px; border-radius: 15px; }
+      .stat-top { margin-bottom: 11px; }
+      .stat-icon { width: 33px; height: 33px; border-radius: 10px; }
+      .stat-label { font-size: 12px; }
+      .stat-foot { font-size: 11px; }
+      .panel, .form-card { padding: 15px; border-radius: 15px; }
+      .forms-grid { grid-template-columns: 1fr; }
+      .form-card:last-child { grid-column: auto; }
+      .panel-header, .table-toolbar { align-items: flex-start; flex-direction: column; }
+      .search, .table-toolbar .btn { width: 100%; max-width: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">ล</div>
+        <div>
+          <h1>ระบบจัดการลูกหนี้</h1>
+          <p>ภาพรวมสัญญาและการรับชำระ</p>
+        </div>
+      </div>
+      <div id="todayLabel" class="date-chip">กำลังโหลดวันที่...</div>
+    </div>
+  </header>
+
+  <main>
+    <div id="message" class="message" role="status" aria-live="polite"></div>
+
+    <div class="section-heading">
+      <div>
+        <h2>ภาพรวมวันนี้</h2>
+        <p>สรุปข้อมูลสัญญาและยอดที่ควรติดตาม</p>
+      </div>
+      <button id="refreshButton" class="btn btn-secondary" type="button">
+        รีเฟรชข้อมูล
+      </button>
+    </div>
+
+    <section class="summary-grid" aria-label="สรุปภาพรวม">
+      <article class="stat-card">
+        <div class="stat-top">
+          <div class="stat-label">สัญญาที่ยังใช้งาน</div>
+          <div class="stat-icon icon-blue">ส</div>
+        </div>
+        <div id="activeCount" class="stat-value">—</div>
+        <div class="stat-foot">จำนวนสัญญาที่ยังเปิดอยู่</div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-top">
+          <div class="stat-label">เงินต้นคงเหลือ</div>
+          <div class="stat-icon icon-green">฿</div>
+        </div>
+        <div id="principalTotal" class="stat-value">—</div>
+        <div class="stat-foot">รวมจากสัญญาที่ยังใช้งาน</div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-top">
+          <div class="stat-label">ดอกเบี้ยค้าง</div>
+          <div class="stat-icon icon-amber">ด</div>
+        </div>
+        <div id="interestTotal" class="stat-value">—</div>
+        <div class="stat-foot">ยอดประมาณการ ณ วันนี้</div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-top">
+          <div class="stat-label">งวดครบกำหนดใน 7 วัน</div>
+          <div class="stat-icon icon-red">!</div>
+        </div>
+        <div id="dueCount" class="stat-value">—</div>
+        <div id="dueTodayFoot" class="stat-foot">กำลังตรวจสอบกำหนดรับ</div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h2>รายการที่ต้องติดตาม</h2>
+          <p class="panel-subtitle">งวดที่ครบกำหนดวันนี้หรือภายใน 7 วัน</p>
+        </div>
+      </div>
+      <div id="alerts" class="alerts-list">
+        <div class="empty-state">กำลังตรวจสอบกำหนดรับชำระ...</div>
+      </div>
+    </section>
+
+    <section class="forms-grid">
+      <article class="form-card">
+        <h2>เพิ่มสัญญา</h2>
+        <p class="panel-subtitle">บันทึกข้อมูลลูกหนี้และเงื่อนไขชำระ</p>
+
+        <form id="contractForm">
+          <label for="name">ชื่อลูกหนี้</label>
+          <input id="name" name="name" autocomplete="name" required>
+
+          <label for="phone">เบอร์โทรศัพท์ (ถ้าจำเป็น)</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel">
+
+          <label for="principal">เงินต้น</label>
+          <input id="principal" name="principal" type="number"
+            min="0.01" step="0.01" inputmode="decimal" required>
+
+          <label for="annualRate">ดอกเบี้ยต่อปี (%)</label>
+          <input id="annualRate" name="annualRate" type="number"
+            min="0" step="0.01" inputmode="decimal" required>
+
+          <label for="frequency">รอบชำระ</label>
+          <select id="frequency" name="frequency" required>
+            <option value="รายวัน">รายวัน</option>
+            <option value="รายสัปดาห์">รายสัปดาห์</option>
+            <option value="รายเดือน">รายเดือน</option>
+          </select>
+
+          <div id="dailyIntervalGroup">
+            <label for="dailyIntervalDays">ตัดยอดทุกกี่วัน</label>
+            <input id="dailyIntervalDays" name="dailyIntervalDays"
+              type="number" min="1" max="365" step="1"
+              value="1" inputmode="numeric">
+            <p class="form-note">ตัวอย่าง: ใส่ 3 เพื่อกำหนดตัดยอดทุก 3 วัน</p>
+          </div>
+
+          <label for="mode">รูปแบบการชำระ</label>
+          <select id="mode" name="mode" required>
+            <option value="ตัดต้นพร้อมดอก">ตัดต้นพร้อมดอก</option>
+            <option value="จ่ายดอกเบี้ยอย่างเดียว">จ่ายดอกเบี้ยอย่างเดียว</option>
+          </select>
+
+          <label for="disbursementDate">วันที่จ่ายเงินให้ลูกหนี้</label>
+          <input id="disbursementDate" name="disbursementDate"
+            type="date" required>
+
+          <label for="disbursementMethod">ช่องทางจ่ายเงินให้ลูกหนี้</label>
+          <select id="disbursementMethod" name="disbursementMethod" required>
+            <option value="โอนเงิน">โอนเงิน</option>
+            <option value="เงินสด">เงินสด</option>
+            <option value="อื่น ๆ">อื่น ๆ</option>
+          </select>
+
+          <label class="choice-label">เริ่มนับดอกเบี้ย</label>
+          <div class="choice-group" role="radiogroup"
+            aria-label="เลือกวันเริ่มนับดอกเบี้ย">
+            <label class="choice-option">
+              <input type="radio" name="countStartRule" value="วันนี้" checked>
+              <span>เริ่มนับวันนี้</span>
+            </label>
+            <label class="choice-option">
+              <input type="radio" name="countStartRule" value="วันถัดไป">
+              <span>เริ่มนับวันถัดไป</span>
+            </label>
+          </div>
+
+          <label for="firstDueDate">วันครบกำหนดงวดแรก</label>
+          <input id="firstDueDate" name="firstDueDate" type="date" required>
+
+          <label for="installmentAmount">ยอดที่ต้องรับต่องวด (ถ้ามี)</label>
+          <input id="installmentAmount" name="installmentAmount"
+            type="number" min="0" step="0.01" inputmode="decimal">
+
+          <label for="contractNote">หมายเหตุ</label>
+          <textarea id="contractNote" name="note"></textarea>
+
+          <button class="btn" type="submit">บันทึกสัญญา</button>
+        </form>
+      </article>
+
+      <article class="form-card">
+        <h2>บันทึกรับชำระ</h2>
+        <p class="panel-subtitle">บันทึกยอดและช่องทางรับเงิน</p>
+
+        <form id="paymentForm">
+          <label for="paymentContract">เลือกลูกหนี้</label>
+          <select id="paymentContract" name="contractId" required></select>
+
+          <label for="paidAt">วันที่รับชำระ</label>
+          <input id="paidAt" name="paidAt" type="date" required>
+
+          <label for="amount">ยอดรับชำระ</label>
+          <input id="amount" name="amount" type="number"
+            min="0.01" step="0.01" inputmode="decimal" required>
+
+          <label for="method">ช่องทางรับเงิน</label>
+          <select id="method" name="method">
+            <option value="เงินสด">เงินสด</option>
+            <option value="โอนเงิน">โอนเงิน</option>
+            <option value="อื่น ๆ">อื่น ๆ</option>
+          </select>
+
+          <label for="paymentNote">หมายเหตุ</label>
+          <textarea id="paymentNote" name="note"></textarea>
+
+          <button class="btn" type="submit">บันทึกรับชำระ</button>
+        </form>
+
+        <p class="form-note">
+          ระบบตัดดอกเบี้ยค้างก่อน แล้วจึงตัดเงินต้น
+          สัญญาที่จ่ายดอกเบี้ยอย่างเดียวจะไม่ตัดเงินต้น
+        </p>
+      </article>
+
+      <article class="form-card">
+        <h2>คำขอเกี่ยวกับการปิดยอด</h2>
+        <p class="panel-subtitle">บันทึกคำขอเพื่อรอตรวจสอบ</p>
+
+        <form id="requestForm">
+          <label for="requestContract">เลือกลูกหนี้</label>
+          <select id="requestContract" name="contractId" required></select>
+
+          <label for="requestType">ประเภทคำขอ</label>
+          <select id="requestType" name="type" required>
+            <option value="ขอปิดยอดก่อนกำหนด">ขอปิดยอดก่อนกำหนด</option>
+            <option value="ขอเลื่อนวันปิดยอด">ขอเลื่อนวันปิดยอด</option>
+          </select>
+
+          <label for="requestedDate">วันที่ต้องการ</label>
+          <input id="requestedDate" name="requestedDate" type="date" required>
+
+          <label for="requestNote">หมายเหตุ</label>
+          <textarea id="requestNote" name="note"></textarea>
+
+          <button class="btn" type="submit">บันทึกคำขอ</button>
+        </form>
+
+        <p class="form-note">การบันทึกคำขอยังไม่เปลี่ยนสถานะสัญญา</p>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h2>รายชื่อลูกหนี้</h2>
+          <p class="panel-subtitle">ยอดเงินต้น ดอกเบี้ย และยอดปิดโดยประมาณ</p>
+        </div>
+      </div>
+
+      <div class="table-toolbar">
+        <input id="searchInput" class="search" type="search"
+          placeholder="ค้นหาชื่อลูกหนี้..."
+          aria-label="ค้นหาชื่อลูกหนี้">
+        <div id="resultCount" class="panel-subtitle">กำลังโหลดข้อมูล...</div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ลูกหนี้</th>
+              <th>รอบ / รูปแบบ</th>
+              <th>งวดถัดไป</th>
+              <th>เงินต้นคงเหลือ</th>
+              <th>ดอกเบี้ยค้าง</th>
+              <th>ยอดปิดประมาณการ</th>
+              <th>สถานะ</th>
+            </tr>
+          </thead>
+          <tbody id="list">
+            <tr><td colspan="7">กำลังโหลด...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="small-note">
+        ยอดปิดเป็นค่าประมาณการ ณ วันที่เปิดดู ควรตรวจสอบเงื่อนไขสัญญาและยอดจริงก่อนรับชำระ
+      </p>
+    </section>
+  </main>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    let allItems = [];
+
+    function money(value) {
+      return Number(value || 0).toLocaleString('th-TH', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function localDateString() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function parseLocalDate(value) {
+      const [year, month, day] = value.split('-').map(Number);
+      return new Date(year, month - 1, day);
+    }
+
+    function showMessage(text, type = 'success') {
+      const box = $('message');
+      box.textContent = text;
+      box.className = 'message visible ' + type;
+
+      window.clearTimeout(showMessage.timer);
+      showMessage.timer = window.setTimeout(() => {
+        box.className = 'message';
+      }, 6000);
+    }
+
+    function dataFromForm(form) {
+      return Object.fromEntries(new FormData(form).entries());
+    }
+
+    function setFormBusy(form, busy) {
+      const button = form.querySelector('button[type="submit"]');
+      if (button) button.disabled = busy;
+    }
+
+    function updateDateLabel() {
+      $('todayLabel').textContent = new Intl.DateTimeFormat('th-TH', {
+        dateStyle: 'full'
+      }).format(new Date());
+    }
+
+    function updateFrequencyFields() {
+      const isDaily = $('frequency').value === 'รายวัน';
+      $('dailyIntervalGroup').style.display = isDaily ? 'block' : 'none';
+      $('dailyIntervalDays').required = isDaily;
+    }
+
+    function fillContractSelect(selectId, activeItems) {
+      const select = $(selectId);
+      select.replaceChildren();
+
+      if (!activeItems.length) {
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'ยังไม่มีสัญญาที่ใช้งาน';
+        select.appendChild(option);
+        select.disabled = true;
+        return;
+      }
+
+      select.disabled = false;
+
+      activeItems.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.id;
+        option.textContent =
+          item.name + ' — ยอดปิดประมาณ ' + money(item.payoff) + ' บาท';
+        select.appendChild(option);
+      });
+    }
+
+    function daysUntil(dateString) {
+      const today = parseLocalDate(localDateString());
+      const dueDate = parseLocalDate(dateString);
+      return Math.round((dueDate - today) / 86400000);
+    }
+
+    function renderSummary(activeItems) {
+      const principalTotal = activeItems.reduce(
+        (sum, item) => sum + Number(item.balance || 0), 0
+      );
+      const interestTotal = activeItems.reduce(
+        (sum, item) => sum + Number(item.interestDue || 0), 0
+      );
+
+      const dueItems = activeItems.filter(item => {
+        if (!item.nextDueDate) return false;
+        const days = daysUntil(item.nextDueDate);
+        return days >= 0 && days <= 7;
+      });
+
+      const dueToday = dueItems.filter(
+        item => daysUntil(item.nextDueDate) === 0
+      ).length;
+
+      $('activeCount').textContent =
+        activeItems.length.toLocaleString('th-TH') + ' ราย';
+      $('principalTotal').textContent = money(principalTotal) + ' บาท';
+      $('interestTotal').textContent = money(interestTotal) + ' บาท';
+      $('dueCount').textContent =
+        dueItems.length.toLocaleString('th-TH') + ' งวด';
+
+      $('dueTodayFoot').textContent = dueToday
+        ? 'ครบกำหนดวันนี้ ' + dueToday.toLocaleString('th-TH') + ' งวด'
+        : 'ไม่มีงวดครบกำหนดวันนี้';
+    }
+
+    function renderAlerts(activeItems) {
+      const box = $('alerts');
+      box.replaceChildren();
+
+      const dueItems = activeItems
+        .filter(item => item.nextDueDate)
+        .map(item => ({
+          ...item,
+          daysLeft: daysUntil(item.nextDueDate)
+        }))
+        .filter(item => item.daysLeft >= 0 && item.daysLeft <= 7)
+        .sort((a, b) => a.daysLeft - b.daysLeft);
+
+      if (!dueItems.length) {
+        const empty = document.createElement('div');
+        empty.className = 'empty-state';
+        empty.textContent = 'ไม่มีงวดที่ครบกำหนดภายใน 7 วัน';
+        box.appendChild(empty);
+        return;
+      }
+
+      dueItems.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'alert-item' + (item.daysLeft === 0 ? ' today' : '');
+
+        const dot = document.createElement('span');
+        dot.className = 'alert-dot';
+
+        const content = document.createElement('div');
+
+        const title = document.createElement('div');
+        title.className = 'alert-title';
+        title.textContent = item.daysLeft === 0
+          ? 'ครบกำหนดวันนี้'
+          : 'ครบกำหนดอีก ' + item.daysLeft + ' วัน';
+
+        const detail = document.createElement('div');
+        detail.className = 'alert-detail';
+        detail.textContent =
+          item.name +
+          ' · วันที่ ' + item.nextDueDate +
+          (Number(item.installmentAmount) > 0
+            ? ' · ยอดงวด ' + money(item.installmentAmount) + ' บาท'
+            : '');
+
+        content.appendChild(title);
+        content.appendChild(detail);
+        row.appendChild(dot);
+        row.appendChild(content);
+        box.appendChild(row);
+      });
+    }
+
+    function renderTable(items) {
+      const body = $('list');
+      body.replaceChildren();
+
+      const query = $('searchInput').value.trim().toLowerCase();
+      const filtered = items.filter(item =>
+        String(item.name || '').toLowerCase().includes(query) ||
+        String(item.phone || '').toLowerCase().includes(query)
+      );
+
+      $('resultCount').textContent =
+        'แสดง ' + filtered.length.toLocaleString('th-TH') +
+        ' จาก ' + items.length.toLocaleString('th-TH') + ' รายการ';
+
+      if (!filtered.length) {
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.colSpan = 7;
+        cell.textContent = items.length
+          ? 'ไม่พบข้อมูลที่ตรงกับคำค้นหา'
+          : 'ยังไม่มีข้อมูลลูกหนี้';
+        row.appendChild(cell);
+        body.appendChild(row);
+        return;
+      }
+
+      filtered.forEach(item => {
+        const row = document.createElement('tr');
+
+        const customerCell = document.createElement('td');
+        const customerName = document.createElement('div');
+        customerName.className = 'customer-name';
+        customerName.textContent = item.name || 'ไม่ระบุชื่อ';
+        customerCell.appendChild(customerName);
+
+        if (item.phone) {
+          const phone = document.createElement('div');
+          phone.className = 'customer-phone';
+          phone.textContent = item.phone;
+          customerCell.appendChild(phone);
+        }
+
+        row.appendChild(customerCell);
+
+        const frequencyText = item.frequency === 'รายวัน'
+          ? 'ทุก ' + (item.dailyIntervalDays || 1) + ' วัน / ' + item.mode
+          : item.frequency + ' / ' + item.mode;
+
+        const values = [
+          frequencyText,
+          item.nextDueDate || '-',
+          money(item.balance) + ' บาท',
+          money(item.interestDue) + ' บาท',
+          money(item.payoff) + ' บาท'
+        ];
+
+        values.forEach((value, index) => {
+          const cell = document.createElement('td');
+          cell.textContent = value;
+          if (index >= 2) cell.className = 'money';
+          row.appendChild(cell);
+        });
+
+        const statusCell = document.createElement('td');
+        const status = document.createElement('span');
+        status.className = 'status' +
+          (item.status === 'ปิดบัญชี' ? ' closed' : '');
+        status.textContent = item.status || '-';
+        statusCell.appendChild(status);
+        row.appendChild(statusCell);
+
+        body.appendChild(row);
+      });
+    }
+
+    function loadData() {
+      $('refreshButton').disabled = true;
+      $('refreshButton').textContent = 'กำลังโหลด...';
+
+      google.script.run
+        .withSuccessHandler(items => {
+          allItems = Array.isArray(items) ? items : [];
+          const activeItems = allItems.filter(
+            item => item.status === 'ใช้งาน'
+          );
+
+          renderSummary(activeItems);
+          renderAlerts(activeItems);
+          fillContractSelect('paymentContract', activeItems);
+          fillContractSelect('requestContract', activeItems);
+          renderTable(allItems);
+
+          $('refreshButton').disabled = false;
+          $('refreshButton').textContent = 'รีเฟรชข้อมูล';
+        })
+        .withFailureHandler(error => {
+          showMessage(error.message || 'โหลดข้อมูลไม่สำเร็จ', 'error');
+          $('refreshButton').disabled = false;
+          $('refreshButton').textContent = 'รีเฟรชข้อมูล';
+        })
+        .getDashboard();
+    }
+
+    $('frequency').addEventListener('change', updateFrequencyFields);
+    $('refreshButton').addEventListener('click', loadData);
+    $('searchInput').addEventListener('input', () => renderTable(allItems));
+
+    $('contractForm').addEventListener('submit', event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      setFormBusy(form, true);
+
+      google.script.run
+        .withSuccessHandler(() => {
+          showMessage('บันทึกสัญญาเรียบร้อยแล้ว');
+          form.reset();
+          $('disbursementDate').value = localDateString();
+          $('dailyIntervalDays').value = '1';
+          updateFrequencyFields();
+          setFormBusy(form, false);
+          loadData();
+        })
+        .withFailureHandler(error => {
+          showMessage(error.message || 'บันทึกสัญญาไม่สำเร็จ', 'error');
+          setFormBusy(form, false);
+        })
+        .addContract(dataFromForm(form));
+    });
+
+    $('paymentForm').addEventListener('submit', event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      setFormBusy(form, true);
+
+      google.script.run
+        .withSuccessHandler(result => {
+          showMessage(
+            'บันทึกแล้ว · ตัดดอก ' + money(result.interestPart) +
+            ' บาท · ตัดเงินต้น ' + money(result.principalPart) + ' บาท'
+          );
+          form.reset();
+          $('paidAt').value = localDateString();
+          setFormBusy(form, false);
+          loadData();
+        })
+        .withFailureHandler(error => {
+          showMessage(error.message || 'บันทึกรับชำระไม่สำเร็จ', 'error');
+          setFormBusy(form, false);
+        })
+        .recordPayment(dataFromForm(form));
+    });
+
+    $('requestForm').addEventListener('submit', event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      setFormBusy(form, true);
+
+      google.script.run
+        .withSuccessHandler(() => {
+          showMessage('บันทึกคำขอแล้ว สถานะรอตรวจสอบ');
+          form.reset();
+          setFormBusy(form, false);
+        })
+        .withFailureHandler(error => {
+          showMessage(error.message || 'บันทึกคำขอไม่สำเร็จ', 'error');
+          setFormBusy(form, false);
+        })
+        .addRequest(dataFromForm(form));
+    });
+
+    updateDateLabel();
+    $('disbursementDate').value = localDateString();
+    $('paidAt').value = localDateString();
+    updateFrequencyFields();
+    loadData();
+  </script>
+</body>
+</html>
